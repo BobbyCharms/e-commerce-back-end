@@ -43,12 +43,25 @@ router.post('/', async (req, res) => {
   }
 });
 
+// update a category by its `id` value
 router.put('/:id', (req, res) => {
-  // update a category by its `id` value
+
 });
 
-router.delete('/:id', (req, res) => {
-  // delete a category by its `id` value
+// delete a category by its `id` value
+router.delete('/:id', async (req, res) => {
+  try {
+    const categoryData = await Category.destroy({
+      where: { id: req.params.id }
+    });
+    if (!categoryData) {
+      res.status(404).json({ message: 'There is no trip associated with this ID' });
+      return;
+    }
+    res.status(200).json(categoryData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 module.exports = router;
